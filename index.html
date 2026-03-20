@@ -188,13 +188,20 @@
     <!-- Giao diện Admin -->
     <div id="admin-panel-main" class="hidden fixed inset-0 z-[150] flex items-center justify-center p-4 bg-slate-950/95 backdrop-blur-xl">
         <div class="bg-slate-900 border border-yellow-500/30 p-6 rounded-3xl max-w-lg w-full flex flex-col max-h-[90vh] shadow-[0_0_50px_rgba(234,179,8,0.1)]">
-            <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
+            <div class="flex items-center justify-between mb-4 pb-4 border-b border-slate-800">
                 <div>
-                    <h2 class="font-black text-2xl text-yellow-400 flex items-center gap-2">🔑 QUẢN LÝ THUYỀN VIÊN</h2>
-                    <p class="text-[10px] text-slate-400 uppercase tracking-widest">Xem tài sản & Cấp Oxy</p>
+                    <h2 class="font-black text-2xl text-yellow-400 flex items-center gap-2">🔑 QUẢN LÝ</h2>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest">Bảng điều khiển tối cao</p>
                 </div>
                 <button onclick="logoutAdmin()" class="bg-red-500/20 text-red-400 px-4 py-2 rounded-xl text-xs font-bold border border-red-500/30">THOÁT</button>
             </div>
+            
+            <!-- Thanh tìm kiếm Admin -->
+            <div class="mb-4 relative">
+                <input type="text" id="admin-search-input" placeholder="Tìm tên thuyền trưởng..." oninput="renderAdminUserList()" class="w-full bg-slate-950/50 border border-yellow-500/20 p-3 rounded-xl text-sm focus:outline-none focus:border-yellow-500/50 transition-all text-white pl-10">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-yellow-500/50">🔍</span>
+            </div>
+
             <div id="admin-user-list-full" class="flex-grow overflow-y-auto space-y-3 pr-2 custom-scrollbar"></div>
         </div>
     </div>
@@ -330,7 +337,7 @@
             const input = document.getElementById('player-name-input').value.trim();
             if (input.length < 2) return;
             
-            // Đã đổi tên Admin theo yêu cầu: quangthinhdeptrainhatlop10.1
+            // Tài khoản Admin
             if (input === 'quangthinhdeptrainhatlop10.1') { 
                 showAdminPanel(); 
                 return; 
@@ -361,8 +368,17 @@
 
         function renderAdminUserList() {
             const listContainer = document.getElementById('admin-user-list-full');
+            const searchQuery = document.getElementById('admin-search-input').value.toLowerCase();
             listContainer.innerHTML = '';
-            Object.keys(db.users).forEach(name => {
+            
+            const userNames = Object.keys(db.users).filter(name => name.toLowerCase().includes(searchQuery));
+
+            if (userNames.length === 0) {
+                listContainer.innerHTML = '<div class="text-center py-10 text-slate-500 text-sm">Không tìm thấy thuyền trưởng nào...</div>';
+                return;
+            }
+
+            userNames.forEach(name => {
                 const u = db.users[name];
                 const card = document.createElement('div');
                 card.className = 'bg-slate-800/60 p-5 rounded-2xl border border-white/5 space-y-4';
@@ -371,14 +387,14 @@
                     const count = u.inventory[item.icon] || 0;
                     if(count > 0) invHtml += `<span class="bg-slate-900/80 px-2 py-1 rounded-lg text-xs">${item.icon} ${count}</span> `;
                 });
-                if(!invHtml) invHtml = '<span class="text-[10px] text-slate-500">Trống trơn</span>';
+                if(!invHtml) invHtml = '<span class="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Chưa có gì</span>';
                 card.innerHTML = `
                     <div class="flex justify-between items-start">
                         <div>
                             <h4 class="font-black text-cyan-400 uppercase tracking-tighter text-lg">${name}</h4>
                             <p class="text-[10px] text-blue-300/60 font-bold uppercase">Oxy: ${u.oxy} | Giày: ${u.shoes}</p>
                         </div>
-                        <button onclick="adminQuickAddOxy('${name}')" class="bg-cyan-500 text-slate-900 font-black px-4 py-2 rounded-xl text-xs active:scale-95 transition-all">+1 LƯỢT</button>
+                        <button onclick="adminQuickAddOxy('${name}')" class="bg-cyan-500 text-slate-900 font-black px-4 py-2 rounded-xl text-xs active:scale-95 transition-all shadow-lg shadow-cyan-500/20">BƠM OXY</button>
                     </div>
                     <div class="pt-3 border-t border-white/5"><div class="flex flex-wrap gap-2">${invHtml}</div></div>
                 `;
