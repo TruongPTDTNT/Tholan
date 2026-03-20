@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thợ Lặn Kho Báu V3 - Admin Control</title>
+    <title>Thợ Lặn Kho Báu V3 - Admin Update</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Keyframes Animations */
@@ -63,7 +63,6 @@
         }
         .epic-impact { animation: screen-shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
 
-        /* Oxy Status Effects */
         @keyframes oxy-pulse {
             0%, 100% { transform: scale(1); filter: brightness(1); }
             50% { transform: scale(1.05); filter: brightness(1.3); }
@@ -80,7 +79,6 @@
             animation: oxy-bubble-out 0.8s forwards ease-out;
         }
 
-        /* Cinematic Intro Effects */
         @keyframes float-slow {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-20px); }
@@ -108,8 +106,6 @@
         .glass-panel { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .inventory-glow { box-shadow: 0 0 20px rgba(34, 211, 238, 0.15); border: 1px solid rgba(34, 211, 238, 0.3); }
         .particle { position: absolute; pointer-events: none; border-radius: 50%; z-index: 60; }
-        .warning-text { text-shadow: 0 0 20px #ef4444; animation: pulse 0.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.05); } }
         
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
@@ -120,42 +116,25 @@
 
     <div class="bubbles" id="bubbles-container"></div>
 
-    <!-- PHẦN QUẢNG CÁO ĐẦU TRANG -->
+    <!-- Intro Splash -->
     <div id="intro-splash" class="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-[#020617]">
         <div class="absolute inset-0 bg-gradient-to-b from-blue-600/10 via-transparent to-transparent"></div>
         <div class="absolute top-0 w-full bg-cyan-500/10 border-y border-cyan-500/20 py-2 overflow-hidden whitespace-nowrap">
             <div class="animate-marquee inline-block text-[10px] font-bold text-cyan-400 uppercase tracking-[0.3em]">
-                Khám phá bí ẩn dưới đáy biển sâu | Những kho báu cổ xưa đang chờ đợi | Cẩn thận Cá Mập tấn công! | Săn tìm vận may ngay hôm nay! | Chế độ sinh tồn v3.5
+                Khám phá bí ẩn dưới đáy biển sâu | Những kho báu cổ xưa đang chờ đợi | Chế độ sinh tồn v3.5
             </div>
         </div>
         <div class="relative z-10 text-center px-6">
-            <div class="intro-float mb-12">
+            <div class="intro-float mb-12 text-center flex flex-col items-center">
                 <div class="text-9xl mb-6 drop-shadow-[0_0_50px_rgba(34,211,238,0.4)]">🔱</div>
                 <h1 class="text-6xl font-black italic text-transparent bg-clip-text bg-gradient-to-b from-white via-cyan-300 to-blue-500 uppercase tracking-tighter leading-none">
                     DEEP SEA<br>TREASURE
                 </h1>
                 <p class="mt-6 text-blue-200/40 text-[10px] font-bold tracking-[0.6em] uppercase">Hành trình huyền thoại v3.5</p>
             </div>
-            <div class="space-y-8 max-w-sm mx-auto">
-                <p class="text-[10px] font-black text-cyan-400 uppercase tracking-widest">Vật phẩm có thể trúng:</p>
-                <div class="grid grid-cols-3 gap-3">
-                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-cyan-500/30 flex flex-col items-center">
-                        <div class="text-3xl mb-2">🥤</div>
-                        <span class="text-[9px] font-black text-white uppercase">Nước Mía</span>
-                    </div>
-                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-blue-500/30 flex flex-col items-center">
-                        <div class="text-3xl mb-2">🌯</div>
-                        <span class="text-[9px] font-black text-white uppercase">Gỏi Cuốn</span>
-                    </div>
-                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-blue-400/30 flex flex-col items-center">
-                        <div class="text-3xl mb-2">🐚</div>
-                        <span class="text-[9px] font-black text-white uppercase">Sò Lông</span>
-                    </div>
-                </div>
-                <button onclick="dismissIntro()" class="w-full bg-white text-slate-950 font-black py-5 rounded-full text-lg shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:scale-105 active:scale-95 transition-all uppercase tracking-widest">
-                    KHÁM PHÁ NGAY
-                </button>
-            </div>
+            <button onclick="dismissIntro()" class="w-full max-w-sm bg-white text-slate-950 font-black py-5 rounded-full text-lg shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:scale-105 active:scale-95 transition-all uppercase tracking-widest">
+                KHÁM PHÁ NGAY
+            </button>
         </div>
     </div>
 
@@ -177,14 +156,14 @@
         <div class="bg-slate-900 border border-yellow-500/30 p-6 rounded-3xl max-w-lg w-full flex flex-col max-h-[90vh] shadow-[0_0_50px_rgba(234,179,8,0.1)]">
             <div class="flex items-center justify-between mb-4 pb-4 border-b border-slate-800">
                 <div>
-                    <h2 class="font-black text-2xl text-yellow-400 flex items-center gap-2">🔑 QUẢN LÝ VẬT PHẨM</h2>
-                    <p class="text-[10px] text-slate-400 uppercase tracking-widest">Nhấp vào vật phẩm bên dưới để trừ số lượng</p>
+                    <h2 class="font-black text-2xl text-yellow-400 flex items-center gap-2">🔑 QUẢN TRỊ VIÊN</h2>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest">Nhấp là Xóa (Không cần hỏi)</p>
                 </div>
-                <button onclick="logoutAdmin()" class="bg-red-500/20 text-red-400 px-4 py-2 rounded-xl text-xs font-bold border border-red-500/30 hover:bg-red-500 hover:text-white transition-all">THOÁT</button>
+                <button onclick="logoutAdmin()" class="bg-slate-800 text-slate-400 px-4 py-2 rounded-xl text-xs font-bold border border-slate-700 hover:bg-white hover:text-black transition-all">THOÁT</button>
             </div>
             
             <div class="mb-4 relative">
-                <input type="text" id="admin-search-input" placeholder="Tìm tên thuyền trưởng..." oninput="renderAdminUserList()" class="w-full bg-slate-950/50 border border-yellow-500/20 p-3 rounded-xl text-sm focus:outline-none focus:border-yellow-500/50 transition-all text-white pl-10">
+                <input type="text" id="admin-search-input" placeholder="Tìm thuyền trưởng..." oninput="renderAdminUserList()" class="w-full bg-slate-950/50 border border-yellow-500/20 p-3 rounded-xl text-sm focus:outline-none focus:border-yellow-500/50 transition-all text-white pl-10">
                 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-yellow-500/50">🔍</span>
             </div>
 
@@ -198,15 +177,13 @@
             <div class="flex flex-col">
                 <div class="flex items-center gap-2 mb-2">
                     <span id="display-name" class="text-xs font-black text-cyan-400 uppercase tracking-widest">THUYỀN TRƯỞNG</span>
-                    <button onclick="showPlayerSettings()" class="bg-white/10 hover:bg-white/20 text-[9px] px-2 py-0.5 rounded-full transition-all">CÀI ĐẶT</button>
+                    <button onclick="logoutPlayer()" class="bg-white/10 hover:bg-white/20 text-[9px] px-2 py-0.5 rounded-full transition-all">THOÁT</button>
                 </div>
-                <div class="flex gap-2">
-                    <div id="oxy-container" class="bg-slate-950/50 px-4 py-2 rounded-2xl border border-white/5 relative overflow-visible transition-all duration-500 oxy-active">
-                        <span class="block text-[9px] text-blue-300 font-bold uppercase mb-1">Oxy Hiện Có</span>
-                        <div class="flex items-center gap-2 relative z-10">
-                            <span class="text-2xl font-black text-white" id="oxy-count">0</span>
-                            <span class="text-lg" id="oxy-icon">🤿</span>
-                        </div>
+                <div id="oxy-container" class="bg-slate-950/50 px-4 py-2 rounded-2xl border border-white/5 relative overflow-visible transition-all duration-500 oxy-active">
+                    <span class="block text-[9px] text-blue-300 font-bold uppercase mb-1">Oxy Hiện Có</span>
+                    <div class="flex items-center gap-2 relative z-10">
+                        <span class="text-2xl font-black text-white" id="oxy-count">0</span>
+                        <span class="text-lg" id="oxy-icon">🤿</span>
                     </div>
                 </div>
             </div>
@@ -222,9 +199,9 @@
         <div class="mb-6 glass-panel inventory-glow p-5 rounded-[2rem] shadow-xl">
             <div class="flex items-center justify-between mb-4 border-b border-cyan-500/20 pb-2">
                 <h3 class="text-[10px] font-black text-cyan-400 tracking-widest uppercase flex items-center gap-2">
-                   <span>📦 KHO ĐỒ CỦA BẠN</span>
+                   <span>📦 KHO ĐỒ</span>
                 </h3>
-                <span class="text-[9px] text-white/30 font-bold bg-white/5 px-2 py-0.5 rounded-lg" id="inv-status">0 vật phẩm</span>
+                <span class="text-[9px] text-white/30 font-bold" id="inv-status">0 vật phẩm</span>
             </div>
             <div id="inventory-list" class="grid grid-cols-5 gap-3"></div>
         </div>
@@ -241,10 +218,6 @@
                     LẶN XUỐNG!
                 </div>
             </button>
-        </div>
-
-        <div class="text-center pb-4">
-             <p class="text-[10px] text-blue-300/20 uppercase tracking-[0.2em]">Khám phá vùng biển tối v3.5</p>
         </div>
 
         <!-- Modal -->
@@ -295,10 +268,8 @@
 
         function dismissIntro() {
             const intro = document.getElementById('intro-splash');
-            intro.animate([{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(1.2)' }], { duration: 500, easing: 'ease-in-out' }).onfinish = () => {
-                intro.style.display = 'none';
-                document.getElementById('login-screen').style.display = 'flex';
-            };
+            intro.style.display = 'none';
+            document.getElementById('login-screen').style.display = 'flex';
         }
 
         function createOxyBubble() {
@@ -346,55 +317,65 @@
             const userNames = Object.keys(db.users).filter(name => name.toLowerCase().includes(searchQuery));
 
             if (userNames.length === 0) {
-                listContainer.innerHTML = '<div class="text-center py-10 text-slate-500 text-sm italic font-medium">⚠️ Không tìm thấy thuyền trưởng này trong dữ liệu hệ thống.</div>';
+                listContainer.innerHTML = '<div class="text-center py-10 text-slate-500 text-xs italic">Không có dữ liệu.</div>';
                 return;
             }
 
             userNames.forEach(name => {
                 const u = db.users[name];
                 const card = document.createElement('div');
-                card.className = 'bg-slate-800/60 p-5 rounded-2xl border border-white/5 space-y-4 relative group';
+                card.className = 'bg-slate-800/60 p-5 rounded-2xl border border-white/5 space-y-4';
                 
                 let invHtml = '';
                 ALL_ITEMS.forEach(item => {
                     const count = u.inventory[item.icon] || 0;
                     if(count > 0) {
-                        invHtml += `<button onclick="adminRemoveItem('${name}', '${item.icon}')" class="bg-slate-900/80 hover:bg-red-500/30 px-3 py-1.5 rounded-xl text-sm transition-all border border-white/5 hover:border-red-500/50 hover:scale-105 active:scale-90" title="Click để xóa 1 cái">${item.icon} ${count}</button> `;
+                        invHtml += `<button onclick="adminRemoveItem('${name}', '${item.icon}')" class="bg-slate-900/80 hover:bg-red-500/50 px-3 py-1.5 rounded-xl text-sm transition-all border border-white/5 hover:border-red-500/50">${item.icon} ${count}</button> `;
                     }
                 });
 
-                let shoesHtml = u.shoes > 0 ? `<button onclick="adminRemoveShoes('${name}')" class="bg-pink-500/10 hover:bg-red-500/30 px-3 py-1.5 rounded-xl text-sm text-pink-400 border border-pink-500/20 hover:border-red-500/50 hover:scale-105 active:scale-90" title="Click để xóa 1 đôi">👟 ${u.shoes}</button>` : '';
+                let shoesHtml = u.shoes > 0 ? `<button onclick="adminRemoveShoes('${name}')" class="bg-slate-900/80 hover:bg-red-500/50 px-3 py-1.5 rounded-xl text-sm border border-white/5 hover:border-red-500/50">👟 ${u.shoes}</button>` : '';
 
-                if(!invHtml && !shoesHtml) invHtml = '<span class="text-[10px] text-slate-500 uppercase tracking-widest font-black">KHO ĐỒ RỖNG</span>';
-                
                 card.innerHTML = `
                     <div class="flex justify-between items-start">
-                        <div class="pr-4">
-                            <h4 class="font-black text-cyan-400 uppercase tracking-tighter text-xl">${name}</h4>
-                            <div class="flex items-center gap-2 mt-1">
-                                <span class="bg-blue-500/20 text-blue-300 text-[10px] px-2 py-0.5 rounded-md font-bold uppercase border border-blue-500/30">OXY: ${u.oxy}</span>
+                        <div>
+                            <div class="flex items-center gap-3">
+                                <h4 class="font-black text-cyan-400 uppercase text-lg">${name}</h4>
+                                <button onclick="adminDeleteUser('${name}')" class="bg-red-500/10 text-red-500 px-2 py-0.5 rounded text-[10px] font-black border border-red-500/20 hover:bg-red-500 hover:text-white transition-all">XÓA TK</button>
                             </div>
+                            <p class="text-[10px] text-blue-300 font-bold uppercase mt-1">OXY: ${u.oxy}</p>
                         </div>
-                        <div class="flex gap-2">
-                            <button onclick="adminQuickAddOxy('${name}')" class="bg-gradient-to-b from-cyan-400 to-blue-600 text-white font-black px-4 py-2 rounded-xl text-xs active:scale-95 transition-all shadow-lg shadow-cyan-500/20 flex items-center gap-1 uppercase tracking-tighter">
-                                🫧 BƠM OXY
-                            </button>
-                        </div>
+                        <button onclick="adminRemoveOxy('${name}')" class="bg-red-500 text-white font-black px-4 py-2 rounded-xl text-xs active:scale-95 transition-all shadow-lg shadow-red-500/20 uppercase tracking-tighter">
+                            🗑️ XÓA OXY
+                        </button>
                     </div>
                     <div class="pt-3 border-t border-white/5">
-                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-2">Quản lý vật phẩm (Bấm vào để xóa 1 cái):</p>
-                        <div class="flex flex-wrap gap-2">${invHtml} ${shoesHtml}</div>
+                        <div class="flex flex-wrap gap-2">${invHtml} ${shoesHtml || '<span class="text-[9px] text-slate-500 font-bold">KHO ĐỒ TRỐNG</span>'}</div>
                     </div>
                 `;
                 listContainer.appendChild(card);
             });
         }
 
+        // --- ADMIN ACTIONS (NO CONFIRMATION) ---
+        function adminRemoveOxy(name) {
+            if(db.users[name].oxy > 0) {
+                db.users[name].oxy--;
+                saveDB(); renderAdminUserList();
+                if (state.playerName === name) updateUI();
+            }
+        }
+
+        function adminDeleteUser(name) {
+            delete db.users[name];
+            saveDB(); renderAdminUserList();
+            if (state.playerName === name) logoutPlayer();
+        }
+
         function adminRemoveItem(userName, icon) {
             if (db.users[userName] && db.users[userName].inventory[icon] > 0) {
                 db.users[userName].inventory[icon]--;
-                saveDB();
-                renderAdminUserList();
+                saveDB(); renderAdminUserList();
                 if (state.playerName === userName) updateUI();
             }
         }
@@ -402,30 +383,9 @@
         function adminRemoveShoes(userName) {
             if (db.users[userName] && db.users[userName].shoes > 0) {
                 db.users[userName].shoes--;
-                saveDB();
-                renderAdminUserList();
+                saveDB(); renderAdminUserList();
                 if (state.playerName === userName) updateUI();
             }
-        }
-
-        function adminQuickAddOxy(name) {
-            db.users[name].oxy += 1;
-            saveDB(); renderAdminUserList();
-            if (state.playerName === name) updateUI();
-        }
-
-        function showPlayerSettings() {
-            modalOverlay.style.display = 'flex';
-            modalContent.innerHTML = `
-                <div class="bg-slate-900/90 border border-white/10 p-8 rounded-[2.5rem] shadow-2xl">
-                    <h3 class="text-2xl font-black text-cyan-400 uppercase mb-6 tracking-tighter">CÀI ĐẶT TÀI KHOẢN</h3>
-                    <div class="space-y-4">
-                        <button onclick="logoutPlayer(); closeModal();" class="w-full bg-white/10 hover:bg-white text-white hover:text-slate-900 font-black py-4 rounded-2xl transition-all uppercase tracking-widest text-sm">ĐỔI TÊN THUYỀN TRƯỞNG</button>
-                        <div class="border-t border-white/5 my-4"></div>
-                        <button onclick="closeModal()" class="w-full text-blue-300/50 font-bold py-2 mt-2 text-xs uppercase">QUAY LẠI</button>
-                    </div>
-                </div>
-            `;
         }
 
         function logoutPlayer() {
@@ -471,7 +431,7 @@
         function handleTrash() {
             state.userData.inventory['🗑️']++; saveDB(); updateUI();
             modalOverlay.style.display = 'flex';
-            modalContent.innerHTML = `<div class="trash-anim text-[10rem] mb-6 drop-shadow-[0_0_40px_rgba(148,163,184,0.4)]">🗑️</div><h3 class="text-3xl font-black mb-3 text-slate-400 uppercase">Ô KÌA... RÁC!</h3><p class="text-slate-500 mb-8 text-sm px-6 italic">Đại dương đang kêu cứu, bạn vừa vớt lên một miếng nhựa cũ.</p><button onclick="closeModal()" class="w-full bg-slate-800 text-slate-300 font-bold py-4 rounded-xl border border-slate-700 active:scale-95 transition-all">ĐƯỢC RỒI</button>`;
+            modalContent.innerHTML = `<div class="trash-anim text-[10rem] mb-6 drop-shadow-[0_0_40px_rgba(148,163,184,0.4)]">🗑️</div><h3 class="text-3xl font-black mb-3 text-slate-400 uppercase">RÁC THẢI!</h3><p class="text-slate-500 mb-8 text-sm px-6 italic">Một miếng nhựa cũ trôi dạt...</p><button onclick="closeModal()" class="w-full bg-slate-800 text-slate-300 font-bold py-4 rounded-xl border border-slate-700 active:scale-95 transition-all">ĐƯỢC RỒI</button>`;
             createParticles('#475569', 15);
         }
 
@@ -479,7 +439,7 @@
             modalOverlay.style.display = 'flex';
             modalContent.innerHTML = `<div class="text-9xl warning-text mb-4">⚠️</div><h3 class="text-3xl font-black text-red-500 uppercase">Cảnh báo nguy hiểm!</h3>`;
             setTimeout(() => {
-                modalContent.innerHTML = `<div class="shark-anim text-[12rem] drop-shadow-[0_0_50px_rgba(239,68,68,0.5)]">🦈</div><h3 class="text-4xl font-black text-white mt-6 italic">CÁ MẬP TẤN CÔNG!</h3>`;
+                modalContent.innerHTML = `<div class="shark-anim text-[12rem] drop-shadow-[0_0_50px_rgba(239,68,68,0.5)]">🦈</div><h3 class="text-4xl font-black text-white mt-6 italic uppercase">CÁ MẬP TẤN CÔNG!</h3>`;
                 body.classList.add('damage-flash'); document.body.classList.add('epic-impact');
                 setTimeout(() => {
                     body.classList.remove('damage-flash'); document.body.classList.remove('epic-impact');
@@ -489,7 +449,7 @@
                     }
                     else { 
                         state.userData.oxy = Math.max(0, state.userData.oxy - 1); 
-                        showSimpleModal("Bị cắn!", "Mất lượt và trừ thêm 1 Oxy do vết thương.", "🩸", "#ef4444"); 
+                        showSimpleModal("Bị cắn!", "Bạn mất thêm 1 Oxy do chấn thương.", "🩸", "#ef4444"); 
                     }
                     saveDB(); updateUI();
                 }, 800);
@@ -499,7 +459,7 @@
         function handleChest() {
             statusIcon.innerText = "🎁";
             modalOverlay.style.display = 'flex';
-            modalContent.innerHTML = `<div class="chest-opening text-[10rem]">🎁</div><h3 class="text-xl font-black mt-6 text-yellow-400 animate-pulse uppercase">ĐANG MỞ RƯƠNG...</h3>`;
+            modalContent.innerHTML = `<div class="chest-opening text-[10rem]">🎁</div><h3 class="text-xl font-black mt-6 text-yellow-400 animate-pulse uppercase tracking-widest">ĐANG MỞ...</h3>`;
             setTimeout(() => {
                 const luck = Math.random() * 100;
                 let item = null;
@@ -515,7 +475,7 @@
 
         function revealItem(item) {
             if (item.rarity !== 'COMMON') { document.body.classList.add('epic-impact'); setTimeout(() => document.body.classList.remove('epic-impact'), 400); createParticles(item.color, 30); }
-            modalContent.innerHTML = `<div class="burst-bg"></div><div class="item-reveal text-[10rem] mb-6 drop-shadow-[0_0_60px_${item.color}]" style="--glow-color: ${item.color}">${item.icon}</div><h3 class="text-3xl font-black mb-2 uppercase" style="color: ${item.color}">${item.name}${item.count > 1 ? ' x' + item.count : ''}</h3><p class="text-blue-200/50 text-xs mb-8">Vật phẩm đã được cất vào kho đồ.</p><button onclick="closeModal()" class="w-full bg-white text-slate-900 font-black py-4 rounded-2xl active:scale-95 transition-all text-lg">TUYỆT VỜI</button>`;
+            modalContent.innerHTML = `<div class="burst-bg"></div><div class="item-reveal text-[10rem] mb-6 drop-shadow-[0_0_60px_${item.color}]" style="--glow-color: ${item.color}">${item.icon}</div><h3 class="text-3xl font-black mb-2 uppercase" style="color: ${item.color}">${item.name}${item.count > 1 ? ' x' + item.count : ''}</h3><p class="text-blue-200/50 text-xs mb-8">Đã cất vào kho đồ.</p><button onclick="closeModal()" class="w-full bg-white text-slate-900 font-black py-4 rounded-2xl active:scale-95 transition-all text-lg uppercase">TIẾP TỤC</button>`;
         }
 
         function createParticles(color, count) {
@@ -549,7 +509,7 @@
 
         function showSimpleModal(t, m, i, c) {
             modalOverlay.style.display = 'flex';
-            modalContent.innerHTML = `<div class="text-8xl mb-6 drop-shadow-[0_0_30px_${c}50]">${i}</div><h3 class="text-2xl font-black mb-3 uppercase" style="color: ${c}">${t}</h3><p class="text-blue-100/60 mb-8 text-sm px-4">${m}</p><button onclick="closeModal()" class="w-full bg-white/10 text-white font-bold py-4 rounded-xl border border-white/10">ĐÓNG</button>`;
+            modalContent.innerHTML = `<div class="text-8xl mb-6 drop-shadow-[0_0_30px_${c}50]">${i}</div><h3 class="text-2xl font-black mb-3 uppercase" style="color: ${c}">${t}</h3><p class="text-blue-100/60 mb-8 text-sm px-4">${m}</p><button onclick="closeModal()" class="w-full bg-white/10 text-white font-bold py-4 rounded-xl border border-white/10 uppercase">ĐÓNG</button>`;
         }
 
         function closeModal() { modalOverlay.style.display = 'none'; }
