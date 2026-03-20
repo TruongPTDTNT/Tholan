@@ -157,7 +157,7 @@
             <div class="flex items-center justify-between mb-4 pb-4 border-b border-slate-800">
                 <div>
                     <h2 class="font-black text-2xl text-yellow-400 flex items-center gap-2">🔑 QUẢN TRỊ VIÊN</h2>
-                    <p class="text-[10px] text-slate-400 uppercase tracking-widest">Nhấp là Xóa (Không cần hỏi)</p>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest">Quản lý thuyền trưởng</p>
                 </div>
                 <button onclick="logoutAdmin()" class="bg-slate-800 text-slate-400 px-4 py-2 rounded-xl text-xs font-bold border border-slate-700 hover:bg-white hover:text-black transition-all">THOÁT</button>
             </div>
@@ -345,9 +345,14 @@
                             </div>
                             <p class="text-[10px] text-blue-300 font-bold uppercase mt-1">OXY: ${u.oxy}</p>
                         </div>
-                        <button onclick="adminRemoveOxy('${name}')" class="bg-red-500 text-white font-black px-4 py-2 rounded-xl text-xs active:scale-95 transition-all shadow-lg shadow-red-500/20 uppercase tracking-tighter">
-                            🗑️ XÓA OXY
-                        </button>
+                        <div class="flex gap-2">
+                            <button onclick="adminAddOxy('${name}')" class="bg-green-500 text-white font-black px-4 py-2 rounded-xl text-xs active:scale-95 transition-all shadow-lg shadow-green-500/20 uppercase tracking-tighter">
+                                ➕ BƠM OXY
+                            </button>
+                            <button onclick="adminRemoveOxy('${name}')" class="bg-red-500 text-white font-black px-4 py-2 rounded-xl text-xs active:scale-95 transition-all shadow-lg shadow-red-500/20 uppercase tracking-tighter">
+                                🗑️ XÓA OXY
+                            </button>
+                        </div>
                     </div>
                     <div class="pt-3 border-t border-white/5">
                         <div class="flex flex-wrap gap-2">${invHtml} ${shoesHtml || '<span class="text-[9px] text-slate-500 font-bold">KHO ĐỒ TRỐNG</span>'}</div>
@@ -358,6 +363,12 @@
         }
 
         // --- ADMIN ACTIONS (NO CONFIRMATION) ---
+        function adminAddOxy(name) {
+            db.users[name].oxy++;
+            saveDB(); renderAdminUserList();
+            if (state.playerName === name) updateUI();
+        }
+
         function adminRemoveOxy(name) {
             if(db.users[name].oxy > 0) {
                 db.users[name].oxy--;
